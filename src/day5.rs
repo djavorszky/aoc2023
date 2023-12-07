@@ -20,7 +20,7 @@ fn task1(input: &str) -> Result<i128> {
         .into_iter()
         .map(|mut n| {
             for mapper in &mappers {
-                n = transform(n, &mapper);
+                n = transform(n, mapper);
             }
 
             n
@@ -31,12 +31,16 @@ fn task1(input: &str) -> Result<i128> {
     Ok(minimum)
 }
 
-fn transform(n: i128, transformations: &Vec<Transformation>) -> i128 {
+fn transform(n: i128, transformations: &[Transformation]) -> i128 {
     transformations
         .iter()
         .find(|t| t.in_range(n))
         .map(|transform| n + transform.op)
         .unwrap_or(n)
+}
+
+fn task2(input: &str) -> Result<i128> {
+    Ok(0)
 }
 
 #[derive(PartialEq, Eq, Debug)]
@@ -117,6 +121,13 @@ mod tests {
     }
 
     #[test]
+    fn test_task2() {
+        let result = task2(TEST).unwrap();
+
+        assert_eq!(result, 48)
+    }
+
+    #[test]
     fn parse_input() {
         let parsed = TEST.parse::<Task1Input>().unwrap();
 
@@ -135,7 +146,7 @@ mod tests {
         )
     }
 
-    const TEST: &'static str = r#"seeds: 79 14 55 13
+    const TEST: &str = r#"seeds: 79 14 55 13
 
 seed-to-soil map:
 50 98 2
