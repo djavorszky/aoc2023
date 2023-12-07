@@ -1,10 +1,11 @@
 mod day5;
+mod day6;
 mod prelude;
 
 use prelude::*;
 
 fn main() -> Result<()> {
-    day5::run_day()?;
+    day6::run_day()?;
 
     Ok(())
 }
