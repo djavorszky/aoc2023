@@ -2,6 +2,7 @@ mod day5;
 mod day6;
 mod day7;
 mod day8;
+mod day9;
 mod prelude;
 
 use clap::Parser;
@@ -25,7 +26,8 @@ fn main() -> Result<()> {
         5 => day5::run_day()?,
         6 => day6::run_day()?,
         7 => day7::run_day()?,
-        _ => day8::run_day()?,
+        8 => day8::run_day()?,
+        _ => day9::run_day()?,
     }
 
     Ok(())
