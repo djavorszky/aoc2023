@@ -4,6 +4,8 @@ pub fn run_day() -> Result<()> {
     let input = include_str!("../input/9.txt");
 
     println!("task 1: {}", task1(input)?);
+    println!("task 2: {}", task2(input)?);
+
     Ok(())
 }
 
@@ -21,6 +23,20 @@ fn task1(input: &str) -> Result<i32> {
     Ok(result)
 }
 
+fn task2(input: &str) -> Result<i32> {
+    let result = input
+        .lines()
+        .map(|line| {
+            line.split_ascii_whitespace()
+                .map(|c| c.parse::<i32>().unwrap())
+                .collect::<Vec<i32>>()
+        })
+        .map(|seq: Vec<i32>| predict_back(&seq))
+        .sum();
+
+    Ok(result)
+}
+
 fn predict_next(seq: &[i32]) -> i32 {
     if seq.iter().all(|&n| n == 0) {
         return 0;
@@ -28,6 +44,19 @@ fn predict_next(seq: &[i32]) -> i32 {
 
     seq.last().unwrap()
         + predict_next(
+            &seq.windows(2)
+                .map(|win| win[1] - win[0])
+                .collect::<Vec<i32>>(),
+        )
+}
+
+fn predict_back(seq: &[i32]) -> i32 {
+    if seq.iter().all(|&n| n == 0) {
+        return 0;
+    }
+
+    seq.first().unwrap()
+        - predict_back(
             &seq.windows(2)
                 .map(|win| win[1] - win[0])
                 .collect::<Vec<i32>>(),
@@ -62,6 +91,13 @@ mod tests {
             .collect();
 
         assert_eq!(predict_next(&test1), 28);
+    }
+
+    #[test]
+    fn test_task_2() {
+        let result = task2(TEST).unwrap();
+
+        assert_eq!(result, 2);
     }
 
     const TEST: &str = r#"0 3 6 9 12 15
